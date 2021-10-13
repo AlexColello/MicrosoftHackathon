@@ -2,6 +2,8 @@ from flask import Flask, request, render_template
 from twilio1 import fetch_sms
 from dotenv import load_dotenv
 import twilio1
+from database import get_db
+app = Flask(__name__)
 
 load_dotenv()
 app = Flask(__name__, template_folder='./')
@@ -23,3 +25,7 @@ def returnMessage():
 @app.route("/test-post/<msg>", methods = ['GET'])
 def returnMessageTest(msg):
     return msg
+
+@app.route('/test-database',methods = ['POST', 'GET'])
+def testDatabase():
+    db = get_db()
