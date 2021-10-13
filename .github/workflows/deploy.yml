@@ -2,6 +2,8 @@ name: Build and deploy Docker app to Azure
 
 on:
   push:
+    branches:
+      - live
   workflow_dispatch:
 
 # CONFIGURATION
