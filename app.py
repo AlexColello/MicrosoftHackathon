@@ -12,8 +12,8 @@ app = Flask(__name__, template_folder='./')
 def hello():
     # sms=fetch_sms()
     # return render_template("index.html", sms=sms)
-
-    return 'Hi hi'
+    return render_template("templates/index.html")
+    # return 'Hi hi'
 
 @app.route("/test-post/", methods = ['POST'])
 def returnMessage():

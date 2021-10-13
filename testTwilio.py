@@ -14,5 +14,5 @@ for x in sms:
 
 
 sms_send_result = twilio1.send_sms("Testing", anjali)
-call_result = twilio1.make_call("Hello! Your loved one's service dog needs your attention! Please check in on them! Also, milky toes has very milky toes.", anjali)
+call_result = twilio1.make_call("Hello! Your loved one's service dog is trying to get your attention! Please check in on them!", anjali)
 
