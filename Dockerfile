@@ -1,6 +1,9 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.8-slim-buster
+FROM ubuntu:20.04
+
+RUN apt-get update
+RUN apt-get install -y python3-pip
 
 WORKDIR /app
 
