@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 # import twilio1
 from database import get_db
 import os
-app = Flask(__name__)
 
 load_dotenv()
 app = Flask(__name__, template_folder='./')

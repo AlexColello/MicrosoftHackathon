@@ -48,7 +48,6 @@ jobs:
         DATABASE_USER_ID=${{ secrets.DATABASE_USER_ID }}
         DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
         " > .env
-        cat .env
         docker build . -t ${{ env.CONTAINER_REGISTRY }}/flaskapp:${{ github.sha }}
         docker push ${{ env.CONTAINER_REGISTRY }}/flaskapp:${{ github.sha }} 
 # Uncomment the below action snippet if the Web app credentials are not updated as web app settings
