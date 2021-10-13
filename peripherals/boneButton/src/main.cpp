@@ -7,11 +7,14 @@
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 #include <Arduino.h>
+#include <ArduinoJson.h>
+
 
 char WIFI_SSID[] = "SpectrumSetup-4D";
 char WIFI_PASS[] = "statustheory991";
 
 // int status = WL_IDLE_STATUS;
+// button pressed for my ID 
 char server[] = //  "www.google.com"; 
    "usc-squad-hackathon.azurewebsites.net";
 
@@ -90,10 +93,13 @@ void setup()
   else {
     Serial.println("Connected to server!");
     // Make a HTTP request:
+    /*
     client.println("GET https://usc-squad-hackathon.azurewebsites.net/ HTTP/1.0");
     client.println("Host: usc-squad-hackathon.azurewebsites.net");
     client.println("Connection: close");
     client.println();
+    
+
 
     while (client.connected()) {
       String line = client.readStringUntil('\n');
@@ -108,8 +114,8 @@ void setup()
       char c = client.read();
       Serial.write(c);
     }
-
-    client.stop();
+    */
+   //client.stop();
   }
 }
 
@@ -134,30 +140,55 @@ void loop()
     Serial.println("connection failed");
     return;
   }
-
+*/
     // We now create a URI for the request
-    String url = "/test-post/";
-    String message = "yayAlexSetUpPostRequests";
+   String url = "/test-post/";
 
-    Serial.print("Requesting URL: ");
-    Serial.println(url);
+    StaticJsonDocument<64> doc;
+    
+    doc["test"] = "test";
+    String output = "";
 
-    // This will send the request to the server
-    client.println("GET / HTTP/1.1");
-    client.println("Host: google.com");
-    client.println("User-Agent: arduino/1.0");
+    serializeJson(doc, output);
+
+    client.println("POST https://usc-squad-hackathon.azurewebsites.net" + url + " HTTP/1.1");
+    client.println("Host: " + String(server));
+    client.println("Content-Type: application/json");
+    client.println("Accept: */*");
+    client.println("Content-Length: " + String(output.length()));
+    client.println("Connection: keep-alive");
     client.println();
+    client.println(output);
 
-    //client.print(String("GET ") + https:// + " HTTP/1.1\r\n" + "Host: " + server + "\r\n" + "Connection: close\r\n\r\n");
-    
-    //client.println("POST " + url + " HTTP/1.1");
-    //client.println("Host: " + String(server) + ":" + String(httpPort));
-    //client.println("Accept: */ /*");
-    //client.println("Content-Length: " + String(message.length()));
-    //client.println("Content-Type: application/x-www-form-urlencoded");
-    //client.println();
-    //client.println(message);
-    
+
+    while (client.connected()) {
+      String line = client.readStringUntil('\n');
+      if (line == "\r") {
+        Serial.println("headers received");
+        break;
+      }
+    }
+    // if there are incoming bytes available
+    // from the server, read them and print them:
+    while (client.available()) {
+      char c = client.read();
+      Serial.write(c);
+    }
+
+    Serial.println("POST https://usc-squad-hackathon.azurewebsites.net" + url + " HTTP/1.1");
+    Serial.println("Host: " + String(server));
+    Serial.println("Accept: */*");
+    Serial.println("Connection: keep-alive");
+    Serial.println("Content-Type: application/json");
+    Serial.println("Content-Length: " + String(output.length()));
+    Serial.println("Body: " + output);
+    Serial.println();
+    /*
+    client.println("Accept: */ /*");
+    client.println("Content-Length: " + String(message.length()));
+    client.println();
+    client.println(message);
+    */
 
     unsigned long timeout = millis();
     while (client.available() == 0) {
@@ -176,6 +207,6 @@ void loop()
 
     Serial.println();
     Serial.println("closing connection");
-*/
+
 }
 
