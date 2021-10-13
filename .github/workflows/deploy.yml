@@ -11,7 +11,7 @@ on:
 #   AZURE_CREDENTIALS, REGISTRY_USERNAME, REGISTRY_PASSWORD, REGISTRY_URL
 # 2. Change these variables for your configuration:
 env:
-  AZURE_WEBAPP_NAME: makers-squad-hackathon   # set this to your application's name
+  AZURE_WEBAPP_NAME: usc-squad-hackathon   # set this to your application's name
   CONTAINER_REGISTRY: ${{ secrets.REGISTRY_URL }}  # set secret with Container Registry URL, example : xyz.azurecr.io 
 # AZURE_RESOURCE_GROUP: ActionsDemo   # set this to your Azure Resource group's name - Needed only if you are provisioning the app in the workflow
 # AZURE_APP_PLAN: ActionPlan  # set this to your App service plan's name - Needed only if you are provisioning the app in the workflow
