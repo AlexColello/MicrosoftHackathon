@@ -17,7 +17,7 @@ env:
   CONTAINER_REGISTRY: ${{ secrets.REGISTRY_URL }}  # set secret with Container Registry URL, example : xyz.azurecr.io 
 # AZURE_RESOURCE_GROUP: ActionsDemo   # set this to your Azure Resource group's name - Needed only if you are provisioning the app in the workflow
 # AZURE_APP_PLAN: ActionPlan  # set this to your App service plan's name - Needed only if you are provisioning the app in the workflow
-  
+
 jobs:
   build-and-deploy-to-dev:
     runs-on: ubuntu-latest
@@ -42,6 +42,12 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}    
     - name: Docker Build & Push to ACR
       run: |
+        echo "
+        DATABASE_ID=${{ secrets.DATABASE_ID }}
+        DATABASE_SERVER=${{ secrets.DATABASE_SERVER }}
+        DATABASE_USER_ID=${{ secrets.DATABASE_USER_ID }}
+        DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+        " > .env
         docker build . -t ${{ env.CONTAINER_REGISTRY }}/flaskapp:${{ github.sha }}
         docker push ${{ env.CONTAINER_REGISTRY }}/flaskapp:${{ github.sha }} 
 # Uncomment the below action snippet if the Web app credentials are not updated as web app settings
