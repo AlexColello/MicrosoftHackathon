@@ -2,7 +2,7 @@ from flask import Flask, request, render_template
 # from twilio1 import fetch_sms
 from dotenv import load_dotenv
 # import twilio1
-from database import get_db
+from database import get_db, reset_database
 import os
 
 load_dotenv()
@@ -13,7 +13,6 @@ def hello():
     # sms=fetch_sms()
     # return render_template("index.html", sms=sms)
     return render_template("templates/index.html")
-    # return 'Hi hi'
 
 @app.route("/test-post/", methods = ['POST'])
 def returnMessage():
@@ -28,17 +27,30 @@ def returnMessageTest(msg):
 
 @app.route('/test-database',methods = ['POST', 'GET'])
 def testDatabase():
-    load_dotenv() 
-    print(os.environ)
     db = get_db()
     cursor = db.cursor()
 
     for row in cursor.tables():
-        if row.table_type == "TABLE":
+        if row.table_type == "TABLE" and row.table_schem == "dbo":
             print (row.table_name)
+            print([column[0] for column in cursor.description])
             print (row)
 
     cursor.execute("SELECT * FROM dbo.Customers")
+
+    for row in cursor.fetchall():
+        print(row)
+    return 'yay'
+
+@app.route('/reset-database',methods = ['POST', 'GET'])
+def resetDatabase():
+
+    reset_database()
+
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute("SELECT * FROM dbo.Users")
 
     for row in cursor.fetchall():
         print(row)
