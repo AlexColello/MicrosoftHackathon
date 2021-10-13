@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     steps:
-    - uses: actions/checkout@live
+    - uses: actions/checkout@master
     - name: Azure authentication
       uses: azure/login@v1
       with:
