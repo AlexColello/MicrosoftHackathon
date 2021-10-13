@@ -1,4 +1,4 @@
-from flask import Flask, g, request
+from flask import Flask, request
 app = Flask(__name__)
 
 @app.route("/")
@@ -8,10 +8,8 @@ def hello():
 
 @app.route("/test-post/", methods = ['POST'])
 def returnMessage():
-    g.msg = request.json
     return request.json
 
 @app.route("/test-post/<msg>", methods = ['POST'])
 def returnMessageTest(msg):
-    g.msg = msg
     return msg
