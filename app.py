@@ -1,13 +1,15 @@
 from flask import Flask, request, render_template
+from twilio1 import fetch_sms
 from dotenv import load_dotenv
 import twilio1
 
 load_dotenv()
-app = Flask(__name__)
+app = Flask(__name__, template_folder='./')
 
 @app.route('/')
 def hello():
-    return render_template("index.html")
+    sms=fetch_sms()
+    return render_template("index.html", sms=sms)
 
     # return 'Hi hi'
 
