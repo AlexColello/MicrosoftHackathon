@@ -15,7 +15,7 @@
     <link href="./css/styles.css" rel="stylesheet" />
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
         <div class="container">
             <a class="navbar-brand" href="./index.html">Bark Alert Safety</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,7 @@
     </nav>
 
     <section id="hero">
-        <div>
+        <div class="login-panel">
             <!-- <img class="main-header" src="" width="100%"> -->
             <div class="text">
                 <h1>Bark Alert Safety</h1>
@@ -98,8 +98,8 @@
         :root {
             --background-color: #fff;
             --text-color: #000;
-            --main-color: #444;
-            --highlight-color: #666;
+            --main-color: #e9c46b;
+            --highlight-color: #e66f51;
             --nav-link-color: #fff;
             --footer-background-color: #444;
         }
@@ -127,7 +127,7 @@
 
         h1,
         h2 {
-            font-weight: 700;
+            font-weight: 200;
             font-size: 36px;
         }
 
@@ -153,13 +153,16 @@
         *  Bootstrap Overrides  *
         * * * * * * * * * * * * */
         .navbar {
-            position: absolute;
+            position: fixed;
+            width: 100%;
             z-index: 1;
         }
-
+        .navbar-custom {
+            background-color: #2a9d8e;
+        }
         .navbar .navbar-brand {
-            margin-left: 60px;
-            margin-right: 80px;
+            margin-left: 10%;
+            margin-right: 40%;
             font-size: 36px;
             font-weight: 700;
             color: var(--nav-link-color);
@@ -198,9 +201,17 @@
             display: 'block';
             padding: '0.5rem 1rem';
             margin: '0.5rem';
-            align: center;
+            /* align: center; */
             top: 90%;
             left: 50%;
+        }
+        .login-panel {
+            width: 30%;
+            border: 13px #e9c46b;
+            top: 60%;
+            left: auto;
+            right: auto;
+            background-color: #2a9d8e;
         }
         /* * * * * * * * * * *
         *  Content Styles   *
@@ -219,9 +230,10 @@
                 url(https://images04.military.com/sites/default/files/styles/full/public/2020-09/provided%20Constant%20in%20the%20chaos%202%201200.jpg);
             background-repeat: no-repeat;
             background-size: cover;
+            /* top: 10%; */
             width: 100%;
             height: 100%;
-            opacity: 0.8;
+            /* opacity: 0.8; */
         }
 
         #hero > div > .text {
