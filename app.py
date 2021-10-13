@@ -22,10 +22,22 @@ def returnMessage():
 
     return request.json
 
-@app.route("/test-post/<msg>", methods = ['GET'])
+@app.route("/test-post/<msg>", methods = ['POST'])
 def returnMessageTest(msg):
     return msg
 
 @app.route('/test-database',methods = ['POST', 'GET'])
 def testDatabase():
     db = get_db()
+    cursor = db.cursor()
+
+    for row in cursor.tables():
+        if row.table_type == "TABLE":
+            print (row.table_name)
+            print (row)
+
+    cursor.execute("SELECT * FROM dbo.Customers")
+
+    for row in cursor.fetchall():
+        print(row)
+    return 'yay'
