@@ -6,20 +6,26 @@
     <meta name="theme-color" content="#000000" />
     <meta
         name="description"
-        content="Bark Alert Safety"
+        content="Bark Alert"
     />
 
     <link rel="icon" href="./img/favicon.ico" />
-    <title>Bark Alert Safety</title>
+    <title>Bark Alert</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
 
-    <link href="css/styles.css" rel="stylesheet" />
+    <link href= "{{ url_for('static',filename='styles/styles.css') }}" rel="stylesheet" type="text/css"/>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r123/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.21/vanta.waves.min.js"></script>
+
+
 </head>
 <body>
+    
     <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
         <div class="container">
-            <a class="navbar-brand" href="./index.html">Bark Alert Safety</a>
+            <a class="navbar-brand" href="./index.html">Bark Alert</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -41,14 +47,16 @@
     </nav>
 
     <section id="hero">
-        <div class="login-panel">
-            <!-- <img class="main-header" src="" width="100%"> -->
-            <div class="text">
-                <h1>Bark Alert Safety - Sign in</h1>
-                <h4>Notify emergency contacts through a dog-accessible wearable device when you are experiencing a seizure.</h4>
+        <div id="vantajs">
+
+
+        <!-- <img class="main-header" src="" width="100%"> -->
+            <div class="text" style="text-align:center">
+                <h1>Bark Alert - Sign in</h1>
+                <h4>Notify emergency contacts through a dog-accessible wearable device <br>when you are experiencing a seizure.</h4>
                 <!-- <h1>Please login</h1> -->
                 <form class="login" action="" method="post">
-                    <input type="text" placeholder="Username" name="username" value="{{request.form.username }}">
+                    <input type="text" placeholder="Username" name="username" value="{{request.form.username }}"><br>
                     <input type="password" placeholder="Password" name="password" value="{{request.form.password }}">
                     <br>
                     <input class="btn btn-default" type="submit" value="Login">
@@ -62,6 +70,8 @@
 
                 </div>
             </div> -->
+        </div>
+
         </div>
     </section>
     
@@ -92,5 +102,24 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <script>
+        // const myId = document.getElementById("vantajs");
+        VANTA.WAVES({
+            el: "#vantajs",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x7d66b6,
+            shininess: 44.00,
+            waveHeight: 26.00,
+            waveSpeed: 0.75,
+            zoom: 0.65
+        });
+        // VANTA.WAVES("#vantajs");
+    </script>
 </body>
 </html>

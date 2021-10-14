@@ -3,7 +3,6 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
 
-
 char WIFI_SSID[] = "SpectrumSetup-4D";
 char WIFI_PASS[] = "statustheory991";
 
@@ -62,7 +61,6 @@ void setup()
   pinMode(b1, INPUT_PULLUP);
   pinMode(b2, INPUT_PULLUP);
 
-
   Serial.begin(9600);
   delay(10);
   WiFi.mode(WIFI_STA);
@@ -94,8 +92,8 @@ void setup()
   else {
     Serial.println("Connected to server!");
   }
+  
 }
-
 
 void loop()
 {

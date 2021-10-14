@@ -2,7 +2,7 @@ from flask import Flask, request, render_template
 # from twilio1 import fetch_sms
 from dotenv import load_dotenv
 # import twilio1
-from database import get_db
+from database import get_db, reset_database, print_table
 import os
 
 load_dotenv()
@@ -12,30 +12,26 @@ app = Flask(__name__, template_folder='./')
 def hello():
     # sms=fetch_sms()
     # return render_template("index.html", sms=sms)
+    return render_template("templates/index.html")
 
-    return 'Hi hi'
-
-@app.route("/test-post/", methods = ['POST'])
-def returnMessage():
+@app.route("/alert", methods = ['POST'])
+def recieveAlert():
     # sms_send_result = twilio1.send_sms("Hello! Your loved one needs your help!", anjali)
     # call_result = twilio1.make_call("Hello! Your loved one's service dog needs your attention! Please check in on them! Also, milky toes has very milky toes.", anjali)
+    json = request.json
+    print("Recieved: " + str(json))
 
-    return request.json
-
-@app.route("/test-post/<msg>", methods = ['POST'])
-def returnMessageTest(msg):
-    return msg
+    return "Recieved alert from {} for {} buttons.".format(json['deviceID'], json['numButtons'])
 
 @app.route('/test-database',methods = ['POST', 'GET'])
 def testDatabase():
-    load_dotenv() 
-    print(os.environ)
     db = get_db()
     cursor = db.cursor()
 
     for row in cursor.tables():
-        if row.table_type == "TABLE":
+        if row.table_type == "TABLE" and row.table_schem == "dbo":
             print (row.table_name)
+            print([column[0] for column in cursor.description])
             print (row)
 
     cursor.execute("SELECT * FROM dbo.Customers")
@@ -43,3 +39,19 @@ def testDatabase():
     for row in cursor.fetchall():
         print(row)
     return 'yay'
+
+@app.route('/reset-database',methods = ['POST', 'GET'])
+def resetDatabase():
+
+    reset_database()
+
+    get_db().commit()
+    return 'yay!'
+
+
+@app.route('/print-database',methods = ['POST', 'GET'])
+def printDatabase():
+
+    print_table("dbo.Users")
+
+    return 'yay!!'
