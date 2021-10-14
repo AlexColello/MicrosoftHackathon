@@ -47,6 +47,8 @@ def drop_table(name):
     db = get_db()
     cursor = db.cursor()
 
+    print('Droping table "{}"'.format(name))
+
     cursor.execute("DROP TABLE " + name)
 
 def create_tables():
