@@ -1,8 +1,9 @@
 from flask import Flask, request, render_template
 # from twilio1 import fetch_sms
 from dotenv import load_dotenv
-# import twilio1
-from database import get_db, reset_database, print_table
+import twilio_api
+from database import get_db, reset_database, print_table, get_device_user
+import database as db
 import os
 
 load_dotenv()
@@ -27,6 +28,21 @@ def recieveAlert():
     json = request.json
     print("Recieved: " + str(json))
 
+    deviceID = json['deviceID']
+    numButtons = int(json['numButtons'])
+
+    userID = db.get_device_user(deviceID)
+    contacts = db.get_contacts(userID)
+
+    if numButtons >= 2:
+        for contact in contacts:
+            if contact[2]:
+                twilio_api.make_call("Hello! Your loved one's service dog is trying to get your attention! Please check in on them!", contact[0])
+    if numButtons >= 1:
+        for contact in contacts:
+            if contact[1]:
+                twilio_api.send_sms("Hello! Your loved one's service dog is trying to get your attention!", contact[0])
+
     return "Recieved alert from {} for {} buttons.".format(json['deviceID'], json['numButtons'])
 
 @app.route('/test-database',methods = ['POST', 'GET'])
@@ -50,6 +66,10 @@ def testDatabase():
 def resetDatabase():
 
     reset_database()
+    print_table('dbo.Contacts')
+    print(db.get_contacts(1))
+    print_table('dbo.Devices')
+    print(get_device_user('3fxdKhjgIy04'))
 
     get_db().commit()
     return 'yay!'
