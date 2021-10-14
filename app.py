@@ -14,6 +14,12 @@ def hello():
     # return render_template("index.html", sms=sms)
     return render_template("templates/index.html")
 
+@app.route('/dashboard.html')
+def dashboard():
+    # sms=fetch_sms()
+    # return render_template("index.html", sms=sms)
+    return render_template("templates/dashboard.html")
+
 @app.route("/alert", methods = ['POST'])
 def recieveAlert():
     # sms_send_result = twilio1.send_sms("Hello! Your loved one needs your help!", anjali)
