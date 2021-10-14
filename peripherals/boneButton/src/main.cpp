@@ -7,6 +7,7 @@
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 #include <Arduino.h>
+#include <ArduinoJson.h>
 
 char WIFI_SSID[] = "SpectrumSetup-4D";
 char WIFI_PASS[] = "statustheory991";
@@ -51,6 +52,7 @@ const char* ca_cert = \
 //Button pins
 #define b1 16
 #define b2 17
+#define led 4
 
 // HttpClient client = HttpClient(wifi, server, port);
 WiFiClientSecure client;
@@ -59,9 +61,11 @@ void setup()
 {
   pinMode(b1, INPUT_PULLUP);
   pinMode(b2, INPUT_PULLUP);
-
+  //pinMode(led, OUTPUT);
 
   Serial.begin(9600);
+
+  
   delay(10);
   WiFi.mode(WIFI_STA);
 
@@ -111,19 +115,14 @@ void setup()
 
     client.stop();
   }
+  
 }
-
-int value = 0;
 
 void loop()
 {
-
-  if(digitalRead(b1) && digitalRead(b2)) {
-    // Send http post here notifying to call whoever
-  }
+  
   delay(1000);
-  ++value;
-/*
+  
   Serial.print("connecting to ");
   Serial.println(server);
 
@@ -135,47 +134,88 @@ void loop()
     return;
   }
 
-    // We now create a URI for the request
-    String url = "/test-post/";
-    String message = "yayAlexSetUpPostRequests";
+  // We now create a URI for the request
+  String url = "/test-post/";
 
-    Serial.print("Requesting URL: ");
-    Serial.println(url);
+  // Button check logic
 
-    // This will send the request to the server
-    client.println("GET / HTTP/1.1");
-    client.println("Host: google.com");
-    client.println("User-Agent: arduino/1.0");
+  // Generic information for even if button isn't pressed
+  StaticJsonDocument<500> doc;
+  doc["num_buttons"] = "0";
+  // Totally random device ID
+  doc["device_id"] = "a9$k";
+  String message;
+
+  if(digitalRead(b1) == 0 && digitalRead(b2) == 0) {
+    // Send http post here notifying to call urgent contact
+    
+    // json
+    doc["num_buttons"] = "2";
+    serializeJson(doc, message);
+
+    // http header
+    client.println("POST " + url + " HTTP/1.1");
+    client.println("Host: " + String(server) + ":" + String(httpPort));
+    client.println("Accept: */ /*");
+    client.println("Content-Length: " + String(message.length()));
+    client.println("Content-Type: application/x-www-form-urlencoded");
     client.println();
 
-    //client.print(String("GET ") + https:// + " HTTP/1.1\r\n" + "Host: " + server + "\r\n" + "Connection: close\r\n\r\n");
+    // send json message
+    client.println(message);
+
+
+
+  } else if(digitalRead(b1)==0 || digitalRead(b2)==0) {
+    // Send less urgent post?
+
+    // json
+    doc["num_buttons"] = "2";
+    serializeJson(doc, message);
+
+    // http header
+    client.println("POST " + url + " HTTP/1.1");
+    client.println("Host: " + String(server) + ":" + String(httpPort));
+    client.println("Accept: */ /*");
+    client.println("Content-Length: " + String(message.length()));
+    client.println("Content-Type: application/x-www-form-urlencoded");
+    client.println();
+
+    // send json message
+    client.println(message);
     
-    //client.println("POST " + url + " HTTP/1.1");
-    //client.println("Host: " + String(server) + ":" + String(httpPort));
-    //client.println("Accept: */ /*");
-    //client.println("Content-Length: " + String(message.length()));
-    //client.println("Content-Type: application/x-www-form-urlencoded");
-    //client.println();
-    //client.println(message);
     
+  }
 
-    unsigned long timeout = millis();
-    while (client.available() == 0) {
-        if (millis() - timeout > 5000) {
-            Serial.println(">>> Client Timeout !");
-            client.stop();
-            return;
-        }
-    }
+  //client.print(String("GET ") + https:// + " HTTP/1.1\r\n" + "Host: " + server + "\r\n" + "Connection: close\r\n\r\n");
+  // Serial.print("Requesting URL: ");
+  // Serial.println(url);
 
-    // Read all the lines of the reply from server and print them to Serial
-    while(client.available()) {
-        String line = client.readStringUntil('\r');
-        Serial.print(line);
-    }
+  // // This will send the request to the server
+  // client.println("GET / HTTP/1.1");
+  // client.println("Host: google.com");
+  // client.println("User-Agent: arduino/1.0");
+  // client.println();
+  
+  
+  
 
-    Serial.println();
-    Serial.println("closing connection");
-*/
+  unsigned long timeout = millis();
+  while (client.available() == 0) {
+      if (millis() - timeout > 5000) {
+          Serial.println(">>> Client Timeout !");
+          client.stop();
+          return;
+      }
+  }
+
+  // Read all the lines of the reply from server and print them to Serial
+  while(client.available()) {
+      String line = client.readStringUntil('\r');
+      Serial.print(line);
+  }
+
+  Serial.println();
+  Serial.println("closing connection");
 }
 
