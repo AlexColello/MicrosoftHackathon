@@ -1,5 +1,5 @@
 import pyodbc
-import os
+import os, sys
 from flask import g
 
 def get_db():
@@ -47,7 +47,7 @@ def drop_table(name):
     db = get_db()
     cursor = db.cursor()
 
-    print('Droping table "{}"'.format(name))
+    print('Droping table "{}"'.format(name), file=sys.stdout)
 
     cursor.execute("DROP TABLE " + name)
 
@@ -115,4 +115,4 @@ def print_table(table):
     cursor.execute("SELECT * FROM {}".format(table))
 
     for row in cursor.fetchall():
-        print(row)
+        print(row, file=sys.stdout)
