@@ -2,7 +2,7 @@ from flask import Flask, request, render_template
 # from twilio1 import fetch_sms
 from dotenv import load_dotenv
 # import twilio1
-from database import get_db, reset_database
+from database import get_db, reset_database, print_table
 import os
 
 load_dotenv()
@@ -48,3 +48,10 @@ def resetDatabase():
     reset_database()
 
     return 'yay!'
+
+@app.route('/print-database',methods = ['POST', 'GET'])
+def printDatabase():
+
+    print_table("dbo.Users")
+
+    return 'yay!!'
