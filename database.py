@@ -36,7 +36,7 @@ def get_tables():
 def reset_database():
     table_names = get_tables()
     for table in table_names:
-        drop_table(table)
+        drop_table("dbo." + table)
 
     create_tables()
     insert_sample_data()

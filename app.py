@@ -47,6 +47,7 @@ def resetDatabase():
 
     reset_database()
 
+    get_db().commit()
     return 'yay!'
 
 @app.route('/print-database',methods = ['POST', 'GET'])
