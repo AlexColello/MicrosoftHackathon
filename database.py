@@ -97,7 +97,8 @@ def insert_sample_data():
     insert_user('Tommy', 'Trojan', 'ttrojan@usc.edu', '+13678992256', 'FightOn')
 
     insert_device("3fxdKhjgIy04", 1)
-    insert_contact(1, "+15078892232", 1, 1)
+    insert_contact(1, "+18585272410", 0, 1)
+    insert_contact(1, "+15716436858", 1, 0)
 
 def insert_user(firstname, lastname, email, phonenumber, password):
     db = get_db()
@@ -121,7 +122,7 @@ def insert_contact(userID, phonenumber, send_text, call_phone):
     cursor = db.cursor()
     cursor.execute("""INSERT INTO dbo.Contacts
         (UserID,PhoneNumber,SendText,CallPhone)
-        VALUES (?, ?)""",
+        VALUES (?, ?, ?, ?)""",
         userID, phonenumber, send_text, call_phone)
 
 def get_user(userID):
@@ -143,6 +144,11 @@ def check_sign_in(email, password):
 
     return count > 0
 
+def get_device_user(deviceID):
+    db = get_db()
+    cursor = db.cursor()
+    row = cursor.execute("SELECT (UserID) FROM dbo.Devices WHERE DeviceID=?", deviceID).fetchone()
+    return row.UserID
 
 def print_table(table):
     db = get_db()
