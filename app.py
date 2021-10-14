@@ -47,11 +47,4 @@ def resetDatabase():
 
     reset_database()
 
-    db = get_db()
-    cursor = db.cursor()
-
-    cursor.execute("SELECT * FROM dbo.Users")
-
-    for row in cursor.fetchall():
-        print(row)
     return 'yay'
