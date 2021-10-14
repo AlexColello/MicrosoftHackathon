@@ -14,7 +14,7 @@ def hello():
     # return render_template("index.html", sms=sms)
     return render_template("templates/index.html")
 
-@app.route('/dashboard.html')
+@app.route("/dashboard", methods = ['POST', 'GET'])
 def dashboard():
     # sms=fetch_sms()
     # return render_template("index.html", sms=sms)
@@ -28,6 +28,11 @@ def recieveAlert():
     print("Recieved: " + str(json))
 
     return "Recieved alert from {} for {} buttons.".format(json['deviceID'], json['numButtons'])
+
+@app.route("/insert-ice", methods = ['POST', 'GET'])
+def updateDb():
+    db = get_db()
+    return 'hi'
 
 @app.route('/test-database',methods = ['POST', 'GET'])
 def testDatabase():

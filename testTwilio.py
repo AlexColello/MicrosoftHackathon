@@ -8,11 +8,12 @@ print(sms)
 x = next(sms)
 baran = '+13853369470'
 anjali = '+18585272410'
+emily = '+15716436858'
 
 for x in sms:
     print(x.body)
 
 
-sms_send_result = twilio_api.send_sms("Testing", anjali)
-call_result = twilio_api.make_call("Hello! Your loved one's service dog is trying to get your attention! Please check in on them!", anjali)
+sms_send_result = twilio_api.send_sms("hello emily silly goose", emily)
+# call_result = twilio_api.make_call("Hello! Your loved one's service dog is trying to get your attention! Please check in on them!", anjali)
 
