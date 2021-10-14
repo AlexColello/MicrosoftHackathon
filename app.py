@@ -14,16 +14,12 @@ def hello():
     # return render_template("index.html", sms=sms)
     return render_template("templates/index.html")
 
-@app.route("/test-post/", methods = ['POST'])
-def returnMessage():
+@app.route("/alert/", methods = ['POST'])
+def recieveAlert():
     # sms_send_result = twilio1.send_sms("Hello! Your loved one needs your help!", anjali)
     # call_result = twilio1.make_call("Hello! Your loved one's service dog needs your attention! Please check in on them! Also, milky toes has very milky toes.", anjali)
 
     return request.json
-
-@app.route("/test-post/<msg>", methods = ['POST'])
-def returnMessageTest(msg):
-    return msg
 
 @app.route('/test-database',methods = ['POST', 'GET'])
 def testDatabase():
@@ -49,6 +45,7 @@ def resetDatabase():
 
     get_db().commit()
     return 'yay!'
+
 
 @app.route('/print-database',methods = ['POST', 'GET'])
 def printDatabase():
