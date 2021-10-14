@@ -18,8 +18,10 @@ def hello():
 def recieveAlert():
     # sms_send_result = twilio1.send_sms("Hello! Your loved one needs your help!", anjali)
     # call_result = twilio1.make_call("Hello! Your loved one's service dog needs your attention! Please check in on them! Also, milky toes has very milky toes.", anjali)
+    json = request.json
+    print("Recieved: " + json)
 
-    return request.json
+    return "Recieved alert from {} for {} buttons.".format(json['id'], json['numButtons'])
 
 @app.route('/test-database',methods = ['POST', 'GET'])
 def testDatabase():
