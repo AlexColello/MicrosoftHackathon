@@ -47,4 +47,4 @@ def resetDatabase():
 
     reset_database()
 
-    return 'yay'
+    return 'yay!'
