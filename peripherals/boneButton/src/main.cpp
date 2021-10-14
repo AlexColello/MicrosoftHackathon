@@ -1,9 +1,3 @@
-
-
-
-
-// Set LED_BUILTIN if it is not defined by Arduino framework
-// #define LED_BUILTIN 13
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 #include <Arduino.h>
@@ -13,11 +7,10 @@
 char WIFI_SSID[] = "SpectrumSetup-4D";
 char WIFI_PASS[] = "statustheory991";
 
-// int status = WL_IDLE_STATUS;
 // button pressed for my ID 
-char server[] = //  "www.google.com"; 
-   "usc-squad-hackathon.azurewebsites.net";
+char server[] = "usc-squad-hackathon.azurewebsites.net";
 
+//CA certificate for authenticating and making HTTPS connection 
 const char* ca_cert = \ 
   "-----BEGIN CERTIFICATE-----\n" \
   "MIIFWjCCBEKgAwIBAgIQD6dHIsU9iMgPWJ77H51KOjANBgkqhkiG9w0BAQsFADBa\n" \
@@ -55,11 +48,17 @@ const char* ca_cert = \
 #define b1 16
 #define b2 17
 
-// HttpClient client = HttpClient(wifi, server, port);
+//WiFi Client for sending requests
 WiFiClientSecure client;
+
+//State machine for buttton handling 
+int state = 0; 
+int ostate = 0; 
+int timer = 0; 
 
 void setup()
 {
+  //Configure pins for button input
   pinMode(b1, INPUT_PULLUP);
   pinMode(b2, INPUT_PULLUP);
 
@@ -73,6 +72,7 @@ void setup()
   Serial.print("Connecting to ");
   Serial.println(WIFI_SSID);
 
+  //Connect to WiFi 
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
   while (WiFi.status() != WL_CONNECTED) {
@@ -80,77 +80,59 @@ void setup()
     Serial.print(".");
   }
 
-    Serial.println("");
-    Serial.println("WiFi connected");
-    Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
   
   client.setCACert(ca_cert);
 
-   Serial.println("\nStarting connection to server...");
+  //Connect to server 
+  Serial.println("\nStarting connection to server...");
   if (!client.connect(server, 443))
     Serial.println("Connection failed!");
   else {
     Serial.println("Connected to server!");
-    // Make a HTTP request:
-    /*
-    client.println("GET https://usc-squad-hackathon.azurewebsites.net/ HTTP/1.0");
-    client.println("Host: usc-squad-hackathon.azurewebsites.net");
-    client.println("Connection: close");
-    client.println();
-    
-
-
-    while (client.connected()) {
-      String line = client.readStringUntil('\n');
-      if (line == "\r") {
-        Serial.println("headers received");
-        break;
-      }
-    }
-    // if there are incoming bytes available
-    // from the server, read them and print them:
-    while (client.available()) {
-      char c = client.read();
-      Serial.write(c);
-    }
-    */
-   //client.stop();
   }
 }
 
-int value = 0;
 
 void loop()
 {
+  delay(200);
+  // We now create a URI for the request
+  String url = "/alert";
 
-  if(digitalRead(b1) && digitalRead(b2)) {
-    // Send http post here notifying to call whoever
+  StaticJsonDocument<64> doc;
+  
+  doc["numButtons"] = "0";
+  doc["deviceID"] = "a2hc"; 
+  String output = "";
+  
+  //Check if both buttons are pressed 
+  if( digitalRead(b1) == 0 && digitalRead(b2) == 0) {
+    state = 2;
   }
-  delay(1000);
-  ++value;
-/*
-  Serial.print("connecting to ");
-  Serial.println(server);
-
-  // Use WiFiClient class to create TCP connections
-  //WiFiClient client;
-  const int httpPort = 443;
-  if (!client.connect(server, httpPort)) {
-    Serial.println("connection failed");
-    return;
+  //Check if only one button is pressed 
+  else if (digitalRead(b1)==0 || digitalRead(b2)==0) {
+    if (state != 2){
+      state = 1; 
+    }
   }
-*/
-    // We now create a URI for the request
-   String url = "/test-post/";
+  //Reset to zero if one minute has passed 
+  else if (timer >=300){
+    timer=0;
+    state=0;
+  }
+  else {
+    timer++;
+  }
 
-    StaticJsonDocument<64> doc;
-    
-    doc["test"] = "test";
-    String output = "";
-
+  //Send POST request if the state has changed 
+  if ((state != ostate) && (state !=0)){
+    ostate = state; 
+    doc["numButtons"] = String(state);
     serializeJson(doc, output);
-
     client.println("POST https://usc-squad-hackathon.azurewebsites.net" + url + " HTTP/1.1");
     client.println("Host: " + String(server));
     client.println("Content-Type: application/json");
@@ -159,54 +141,15 @@ void loop()
     client.println("Connection: keep-alive");
     client.println();
     client.println(output);
+  
+    String line = client.readStringUntil('\r');
+    Serial.print(line);
+  }
 
-
-    while (client.connected()) {
-      String line = client.readStringUntil('\n');
-      if (line == "\r") {
-        Serial.println("headers received");
-        break;
-      }
-    }
-    // if there are incoming bytes available
-    // from the server, read them and print them:
-    while (client.available()) {
-      char c = client.read();
-      Serial.write(c);
-    }
-
-    Serial.println("POST https://usc-squad-hackathon.azurewebsites.net" + url + " HTTP/1.1");
-    Serial.println("Host: " + String(server));
-    Serial.println("Accept: */*");
-    Serial.println("Connection: keep-alive");
-    Serial.println("Content-Type: application/json");
-    Serial.println("Content-Length: " + String(output.length()));
-    Serial.println("Body: " + output);
-    Serial.println();
-    /*
-    client.println("Accept: */ /*");
-    client.println("Content-Length: " + String(message.length()));
-    client.println();
-    client.println(message);
-    */
-
-    unsigned long timeout = millis();
-    while (client.available() == 0) {
-        if (millis() - timeout > 5000) {
-            Serial.println(">>> Client Timeout !");
-            client.stop();
-            return;
-        }
-    }
-
-    // Read all the lines of the reply from server and print them to Serial
-    while(client.available()) {
-        String line = client.readStringUntil('\r');
-        Serial.print(line);
-    }
-
-    Serial.println();
-    Serial.println("closing connection");
-
+  // if there are incoming bytes available
+  // from the server, read them and print them:
+  while (client.available()) {
+    char c = client.read();
+    Serial.write(c);
+  }
 }
-
