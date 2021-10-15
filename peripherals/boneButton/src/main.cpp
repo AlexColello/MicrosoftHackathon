@@ -61,36 +61,38 @@ void setup()
   pinMode(b1, INPUT_PULLUP);
   pinMode(b2, INPUT_PULLUP);
 
+/*
   Serial.begin(9600);
   delay(10);
+*/
   WiFi.mode(WIFI_STA);
-
+/*
   Serial.println();
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(WIFI_SSID);
-
+*/
   //Connect to WiFi 
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    Serial.print(".");
+    //Serial.print(".");
   }
-
+/*
   Serial.println("");
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
-  
+ */ 
   client.setCACert(ca_cert);
 
   //Connect to server 
-  Serial.println("\nStarting connection to server...");
-  if (!client.connect(server, 443))
-    Serial.println("Connection failed!");
+  //Serial.println("\nStarting connection to server...");
+  if (!client.connect(server, 443));
+   // Serial.println("Connection failed!");
   else {
-    Serial.println("Connected to server!");
+   // Serial.println("Connected to server!");
   }
   
 }
@@ -104,7 +106,7 @@ void loop()
   StaticJsonDocument<64> doc;
   
   doc["numButtons"] = "0";
-  doc["deviceID"] = "a2hc"; 
+  doc["deviceID"] = "3fxdKhjgIy04"; 
   String output = "";
   
   //Check if both buttons are pressed 
@@ -141,13 +143,13 @@ void loop()
     client.println(output);
   
     String line = client.readStringUntil('\r');
-    Serial.print(line);
+    //Serial.print(line);
   }
 
   // if there are incoming bytes available
   // from the server, read them and print them:
   while (client.available()) {
     char c = client.read();
-    Serial.write(c);
+    //Serial.write(c);
   }
 }
