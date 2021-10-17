@@ -3,8 +3,14 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
 
+// Alex's wifi
 char WIFI_SSID[] = "SpectrumSetup-4D";
 char WIFI_PASS[] = "statustheory991";
+
+//Anj's wifi
+// char WIFI_SSID[] = "Verizon-5G-Home-54CB";
+// char WIFI_PASS[] = "viol6-empty-sou";
+
 
 // button pressed for my ID 
 char server[] = "usc-squad-hackathon.azurewebsites.net";
