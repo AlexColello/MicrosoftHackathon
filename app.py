@@ -15,7 +15,7 @@ def hello():
     # return render_template("index.html", sms=sms)
     return render_template("templates/index.html")
 
-@app.route("/dashboard", methods = ['POST', 'GET'])
+@app.route("/dashboard.html", methods = ['POST', 'GET'])
 def dashboard():
     # sms=fetch_sms()
     # return render_template("index.html", sms=sms)
@@ -48,7 +48,9 @@ def recieveAlert():
 @app.route("/insert-ice", methods = ['POST', 'GET'])
 def updateDb():
     db = get_db()
-    return 'hi'
+    print('in insert_ice!')
+    return render_template("templates/dashboard.html")
+
 
 @app.route('/test-database',methods = ['POST', 'GET'])
 def testDatabase():
