@@ -98,7 +98,7 @@ def insert_sample_data():
 
     insert_device("3fxdKhjgIy04", 1)
     insert_contact(1, "+18585272410", 0, 1)
-    insert_contact(1, "+15716436858", 1, 0)
+    insert_contact(1, "+13853369470", 1, 0)
 
 def insert_user(firstname, lastname, email, phonenumber, password):
     db = get_db()
