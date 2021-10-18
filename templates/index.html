@@ -36,10 +36,10 @@
                         <a class="nav-link" href="#hero">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#about">About</a>
+                        <a class="nav-link" href="#inspiration">Inspiration</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact</a>
+                        <a class="nav-link" href="#functionality">Functionality</a>
                     </li>
                 </ul>
             </div>
@@ -75,26 +75,31 @@
         </div>
     </section>
     
-    <section id="about">
+    <section id="inspiration">
         <div class="container">
             <div id="blurb" class="row">
                 <div class="text-center offset-4 col-4">
                     <br><br><br>
-                    <h2>Who are we?</h2>
-                    <p>ok</p>
+                    <h2>Inspiration</h2>
+                    <p>In the United States, it is estimated that over 2.2 million people are currently suffering from epilepsy. A common service for individuals suffering from epilepsy is seizure alert dogs. Seizure alert dogs are highly trained and can perform a variety of services when their owner is having a seizure, including lying next to someone having a seizure, cushioning their owner to break their fall, and staying with their owner for the duration of the seizure. They can also be trained to activate alarm devices when their owner is having a seizure. 
+                    <br><br>However, one thing service dogs currently cannot do is make emergency calls or texts. The ability to contact a designated emergency contact would be a potentially life-saving feature. One of the major benefits service dogs provides their owners is a sense of independence. Leveraging Microsoft Azure's web services and databases, Bark Alert brings an unprecedented level of independence to epileptic individuals, as their loved ones can be certain that they would be immediately notified in the event of an emergency. </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="contact">
+    <section id="functionality">
         <div class="container">
             <br><br><br>
-            <h2 class="text-center">Contact</h2>
+            <h2 class="text-center">How it works</h2>
             <div class="row">
                 <div class="col-md-5 mx-auto">
                     <p class="text-center">
-                        very nice
+                        The peripheral hardware device consists of a 3D printed bone that has buttons based on both sides within the bone. In order for an emergency call to be made, both buttons must be depressed at the same time. This means the dog must be actively biting the bone and the emergency response cannot be accidentally triggered.
+                        <br><br>
+                        Bark Alert uses an ESP32 to send the POST requests to the Azure website server when a dog bites. When the website receives this request, the Twilio API is called and sends a phone number and call to the emergency contacts. 
+                        <br><br>
+                        Each device and future Bark Alert devices have a unique ID that corresponds with their respective users. Upon getting a Bark Alert device, users will have a unique login where they can set up their emergency contacts. This information is stored in a database.                    
                     </p>
                 </div>
             </div>
